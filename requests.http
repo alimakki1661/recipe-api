@@ -1,0 +1,48 @@
+@baseUrl = http://localhost:3000
+
+### API root
+GET {{baseUrl}}/
+
+### List recipes
+GET {{baseUrl}}/api/recipes
+
+### Filter by category
+GET {{baseUrl}}/api/recipes?category=lunch
+
+### Create a recipe to use in the requests below
+# @name createRecipe
+POST {{baseUrl}}/api/recipes
+Content-Type: application/json
+
+{
+  "title": "Yogurt and Berry Bowl",
+  "category": "breakfast",
+  "ingredients": ["1 cup yogurt", "1/2 cup berries"],
+  "instructions": "Spoon the yogurt into a bowl and top it with berries."
+}
+
+### Read the created recipe
+GET {{baseUrl}}/api/recipes/{{createRecipe.response.body.$.id}}
+
+### Replace the recipe
+PUT {{baseUrl}}/api/recipes/{{createRecipe.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "title": "Yogurt, Berry, and Oat Bowl",
+  "category": "breakfast",
+  "ingredients": ["1 cup yogurt", "1/2 cup berries", "1/4 cup oats"],
+  "instructions": "Stir the oats into the yogurt and top it with berries."
+}
+
+### Reject a malformed recipe with a 400 JSON error
+POST {{baseUrl}}/api/recipes
+Content-Type: application/json
+
+{"title": "Missing the other fields"}
+
+### Delete the recipe
+DELETE {{baseUrl}}/api/recipes/{{createRecipe.response.body.$.id}}
+
+### Confirm deletion with a 404 JSON error
+GET {{baseUrl}}/api/recipes/{{createRecipe.response.body.$.id}}
