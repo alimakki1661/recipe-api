@@ -36,11 +36,18 @@ export function validateRecipe(body: unknown): TablesInsert<'recipes'> {
   }
 
   const fields = ['title', 'category', 'ingredients', 'instructions'];
-  if (Object.keys(body).some((key) => !fields.includes(key))) {
-    throw new HttpError(400, 'Only title, category, ingredients, and instructions can be written.');
+  const unknown = Object.keys(body).filter((key) => !fields.includes(key));
+  if (unknown.length > 0) {
+    throw new HttpError(400, `Unknown field: ${unknown.join(', ')}. Only title, category, ingredients, and instructions can be written.`);
   }
 
   const { title, category, ingredients, instructions } = body as Record<string, unknown>;
+
+  const missing = fields.filter((field) => !(field in body));
+  if (missing.length > 0) {
+    throw new HttpError(400, `Missing required field: ${missing.join(', ')}.`);
+  }
+
   if (!Array.isArray(ingredients) || ingredients.length < 1 || ingredients.length > 30) {
     throw new HttpError(400, 'Ingredients must be an array containing 1 to 30 strings.');
   }
