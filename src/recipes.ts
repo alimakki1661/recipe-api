@@ -6,7 +6,7 @@ import { validateCategory, validateId, validateRecipe } from './validation.js';
 export const recipes = Router();
 
 recipes.get('/', async (req, res) => {
-  const category = req.query.category === undefined
+  const category = req.query.category === undefined || req.query.category === ''
     ? undefined
     : validateCategory(req.query.category);
 
