@@ -62,7 +62,7 @@ See [requests.http](requests.http) for the full request sequence.
 
 ## Vercel
 
-**Live base URL** — pending deployment.
+**Live base URL** — https://recipe-api-three-mu.vercel.app
 
 1. Push this project to a GitHub repository that your grader can open.
 2. [Import the repository into Vercel](https://vercel.com/new). Express is detected from the root `index.ts` and its default app export.
